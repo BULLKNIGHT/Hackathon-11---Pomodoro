@@ -1,11 +1,134 @@
-import React, {Component, useState} from "react";
-import '../styles/App.css';
+import React, { Component, useEffect, useRef, useState } from "react";
+import "../styles/App.css";
 
 const App = () => {
-  return (
-    <div id="main"></div>
-  )
-}
+  const [time, setTime] = useState("Work-Time");
+  const [workTime, setWorkTime] = useState(25);
+  const [breakTime, setBreakTime] = useState(5);
+  const [minutes, setMinutes] = useState(workTime);
+  const [seconds, setSeconds] = useState(0);
+  const [start, setStart] = useState(false);
+  const [stop, setStop] = useState(true);
+  const [reset, setReset] = useState(true);
+  const [set, setSet] = useState(false);
+  const workInput = useRef(null);
+  const breakInput = useRef(null);
+  
+  let intervalId = null;
 
+  const tick = () => {
+    if(stop) return;
+    if (seconds > 0) {
+      setSeconds(seconds - 1);
+    }
+    if (seconds === 0) {
+      if (minutes === 0) {
+        clearInterval(intervalId);
+        if(time === "Work-Time") {
+          alert("work duration is over");
+          setMinutes(breakTime);
+          setSeconds(0);
+          setTime("Break-Time");
+        } else {
+          alert("break duration is over");
+          setMinutes(workTime);
+          setSeconds(0);
+          setTime("Work-Time");
+        }
+      } else {
+        setMinutes(minutes - 1);
+        setSeconds(59);
+      }
+    }
+    // console.log(minutes, seconds);
+  };
+
+  const setHandler = () => {
+    setReset(false);
+    setSet(false);
+    setStart(false);
+    setStop(true);
+    setMinutes(workTime);
+    setSeconds(0);
+  };
+
+  const startHandler = () => {
+    setStart(true);
+    setStop(false);
+    setReset(false);
+    setSet(true);
+  };
+
+  const stopHandler = () => {
+    setStop(true);
+    setStart(false);
+    setReset(false);
+    setSet(false);
+  };
+
+  const resetHandler = () => {
+    setReset(true);
+    setStop(true);
+    setStart(false);
+    setSet(false);
+    setTime("Work-Time");
+    setWorkTime(25);
+    setBreakTime(5);
+    setMinutes(25);
+    setSeconds(0);
+    // console.log(workInput);
+    workInput.current.value = 25;
+    breakInput.current.value = 5;
+  }
+
+  
+  useEffect(() => {
+    intervalId = setInterval(tick, 1000);
+    return () => clearInterval(intervalId);
+  });
+
+  return (
+    <div id="main">
+      <div className="clock">
+        <h1 className="timer">
+          {minutes < 10 ? `0${minutes}` : minutes}:
+          {seconds < 10 ? `0${seconds}` : seconds}
+        </h1>
+        <h3>{time}</h3>
+      </div>
+      <div className="control">
+        <button disabled={start} onClick={startHandler}>
+          Start
+        </button>
+        <button disabled={stop} onClick={stopHandler}>Stop</button>
+        <button disabled={reset} onClick={resetHandler}>Reset</button>
+      </div>
+      <br />
+      <div className="parameters">
+        <input
+          placeholder="work duration"
+          type="Number"
+          required
+          onChange={(evt) => setWorkTime(Number(evt.target.value))}
+          defaultValue={workTime}
+          disabled={set}
+          ref={workInput}
+        />
+        <input
+          placeholder="break duration"
+          type="Number"
+          required
+          onChange={(evt) => setBreakTime(Number(evt.target.value))}
+          defaultValue={breakTime}
+          disabled={set}
+          ref={breakInput}
+        />
+        <button disabled={set} onClick={setHandler}>
+          Set
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default App;
