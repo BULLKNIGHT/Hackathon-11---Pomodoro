@@ -97,17 +97,18 @@ const App = () => {
         <h3>{time}</h3>
       </div>
       <div className="control">
-        <button disabled={start} onClick={startHandler}>
+        <button data-testid="start-btn" disabled={start} onClick={startHandler}>
           Start
         </button>
-        <button disabled={stop} onClick={stopHandler}>Stop</button>
-        <button disabled={reset} onClick={resetHandler}>Reset</button>
+        <button data-testid="stop-btn" disabled={stop} onClick={stopHandler}>Stop</button>
+        <button data-testid="reset-btn" disabled={reset} onClick={resetHandler}>Reset</button>
       </div>
       <br />
       <div className="parameters">
         <form onSubmit={evt => evt.preventDefault()}>
         <input
           placeholder="work duration"
+          data-testid="work-duration"
           type="Number"
           onChange={(evt) => setWorkTime(Number(evt.target.value))}
           defaultValue={workTime}
@@ -117,6 +118,7 @@ const App = () => {
         />
         <input
           placeholder="break duration"
+          data-testid="break-duration"
           type="Number"
           required
           onChange={(evt) => setBreakTime(Number(evt.target.value))}
@@ -125,7 +127,7 @@ const App = () => {
           ref={breakInput}
           required
         />
-        <button disabled={set} onClick={setHandler}>
+        <button data-testid="set-btn" disabled={set} onClick={setHandler}>
           Set
         </button>
         </form>
