@@ -44,6 +44,10 @@ const App = () => {
   };
 
   const setHandler = () => {
+    if(workTime === 0 && breakTime === 0) {
+      resetHandler();
+      return;
+    }
     setReset(false);
     setSet(false);
     setStart(false);
