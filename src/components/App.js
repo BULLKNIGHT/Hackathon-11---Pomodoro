@@ -105,14 +105,15 @@ const App = () => {
       </div>
       <br />
       <div className="parameters">
+        <form onSubmit={evt => evt.preventDefault()}>
         <input
           placeholder="work duration"
           type="Number"
-          required
           onChange={(evt) => setWorkTime(Number(evt.target.value))}
           defaultValue={workTime}
           disabled={set}
           ref={workInput}
+          required
         />
         <input
           placeholder="break duration"
@@ -122,10 +123,12 @@ const App = () => {
           defaultValue={breakTime}
           disabled={set}
           ref={breakInput}
+          required
         />
         <button disabled={set} onClick={setHandler}>
           Set
         </button>
+        </form>
       </div>
     </div>
   );
