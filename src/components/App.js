@@ -54,6 +54,7 @@ const App = () => {
     setStop(true);
     setMinutes(workTime);
     setSeconds(0);
+    setTime("Work-Time");
   };
 
   const startHandler = () => {
