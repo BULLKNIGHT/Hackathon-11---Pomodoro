@@ -13,27 +13,27 @@ const App = () => {
   const [set, setSet] = useState(false);
   const workInput = useRef(null);
   const breakInput = useRef(null);
-  
+
   let intervalId = null;
 
   const tick = () => {
-    if(stop) return;
+    if (stop) return;
     if (seconds > 0) {
       setSeconds(seconds - 1);
     }
     if (seconds === 0) {
       if (minutes === 0) {
         clearInterval(intervalId);
-        if(time === "Work-Time") {
-          alert("work duration is over");
+        if (time === "Work-Time") {
           setMinutes(breakTime);
           setSeconds(0);
           setTime("Break-Time");
+          alert("work duration is over");
         } else {
-          alert("break duration is over");
           setMinutes(workTime);
           setSeconds(0);
           setTime("Work-Time");
+          alert("break duration is over");
         }
       } else {
         setMinutes(minutes - 1);
@@ -44,7 +44,7 @@ const App = () => {
   };
 
   const setHandler = () => {
-    if(workTime === 0 && breakTime === 0) {
+    if (workTime === 0 && breakTime === 0) {
       resetHandler();
       return;
     }
@@ -84,9 +84,8 @@ const App = () => {
     // console.log(workInput);
     workInput.current.value = 25;
     breakInput.current.value = 5;
-  }
+  };
 
-  
   useEffect(() => {
     intervalId = setInterval(tick, 1000);
     return () => clearInterval(intervalId);
@@ -105,36 +104,40 @@ const App = () => {
         <button data-testid="start-btn" disabled={start} onClick={startHandler}>
           Start
         </button>
-        <button data-testid="stop-btn" disabled={stop} onClick={stopHandler}>Stop</button>
-        <button data-testid="reset-btn" disabled={reset} onClick={resetHandler}>Reset</button>
+        <button data-testid="stop-btn" disabled={stop} onClick={stopHandler}>
+          Stop
+        </button>
+        <button data-testid="reset-btn" disabled={reset} onClick={resetHandler}>
+          Reset
+        </button>
       </div>
       <br />
       <div className="parameters">
-        <form onSubmit={evt => evt.preventDefault()}>
-        <input
-          placeholder="work duration"
-          data-testid="work-duration"
-          type="Number"
-          onChange={(evt) => setWorkTime(Number(evt.target.value))}
-          defaultValue={workTime}
-          disabled={set}
-          ref={workInput}
-          required
-        />
-        <input
-          placeholder="break duration"
-          data-testid="break-duration"
-          type="Number"
-          required
-          onChange={(evt) => setBreakTime(Number(evt.target.value))}
-          defaultValue={breakTime}
-          disabled={set}
-          ref={breakInput}
-          required
-        />
-        <button data-testid="set-btn" disabled={set} onClick={setHandler}>
-          Set
-        </button>
+        <form onSubmit={(evt) => evt.preventDefault()}>
+          <input
+            placeholder="work duration"
+            data-testid="work-duration"
+            type="Number"
+            onChange={(evt) => setWorkTime(Number(evt.target.value))}
+            defaultValue={workTime}
+            disabled={set}
+            ref={workInput}
+            required
+          />
+          <input
+            placeholder="break duration"
+            data-testid="break-duration"
+            type="Number"
+            required
+            onChange={(evt) => setBreakTime(Number(evt.target.value))}
+            defaultValue={breakTime}
+            disabled={set}
+            ref={breakInput}
+            required
+          />
+          <button data-testid="set-btn" disabled={set} onClick={setHandler}>
+            Set
+          </button>
         </form>
       </div>
     </div>
